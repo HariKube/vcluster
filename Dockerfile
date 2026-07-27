@@ -2,8 +2,8 @@ ARG VERSION=v0.0.0
 FROM ghcr.io/loft-sh/vcluster-pro:${VERSION} AS build
 
 FROM --platform=linux/$BUILDARCH busybox:latest AS tmp
-RUN mkdir -p /tmp/rootfs/tmp /tmp/rootfs/usr/local/bin /tmp/rootfs/db
-RUN chmod -R 775 /tmp/rootfs/tmp /tmp/rootfs/usr/local/bin /tmp/rootfs/db
+RUN mkdir -p /tmp/rootfs/tmp /tmp/rootfs/usr/local/bin /var/lib/vcluster
+RUN chmod -R 775 /tmp/rootfs/tmp /tmp/rootfs/usr/local/bin /var/lib/vcluster
 COPY --from=build /vcluster /tmp/rootfs/vcluster
 COPY --from=build /usr/local/bin/kine /tmp/rootfs/usr/local/bin/kine
 COPY --from=build /usr/local/bin/helm /tmp/rootfs/usr/local/bin/helm
@@ -26,4 +26,4 @@ USER 65534
 
 WORKDIR /
 
-ENTRYPOINT ["/vcluster" "start"]
+ENTRYPOINT ["/vcluster", "start"]
