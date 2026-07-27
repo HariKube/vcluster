@@ -65,15 +65,11 @@ jobs:
     - name: Pull images
       run: |
         docker pull ${{ vars.REGISTRY }}/${{ vars.REPOSITORY }}/vcluster-pro:${{ inputs.version }}-amd64
-        docker pull ${{ vars.REGISTRY }}/${{ vars.REPOSITORY }}/vcluster-pro:${{ inputs.version }}-ppc64le
-        docker pull ${{ vars.REGISTRY }}/${{ vars.REPOSITORY }}/vcluster-pro:${{ inputs.version }}-s390x
         docker pull ${{ vars.REGISTRY }}/${{ vars.REPOSITORY }}/vcluster-pro:${{ inputs.version }}-arm64
     - name: Create manifest
       run: |
         docker manifest create ${{ vars.REGISTRY }}/${{ vars.REPOSITORY }}/vcluster-pro:${{ inputs.latest && 'latest' || inputs.version }} \
         ${{ vars.REGISTRY }}/${{ vars.REPOSITORY }}/vcluster-pro:${{ inputs.version }}-amd64 \
-        ${{ vars.REGISTRY }}/${{ vars.REPOSITORY }}/vcluster-pro:${{ inputs.version }}-ppc64le \
-        ${{ vars.REGISTRY }}/${{ vars.REPOSITORY }}/vcluster-pro:${{ inputs.version }}-s390x \
         ${{ vars.REGISTRY }}/${{ vars.REPOSITORY }}/vcluster-pro:${{ inputs.version }}-arm64
     - name: Push manifest
       if: ${{ ! inputs.latest }}
