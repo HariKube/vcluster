@@ -26,8 +26,6 @@ jobs:
       matrix:
         arch:
         - amd64
-        - ppc64le
-        - s390x
         - arm64
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -40,7 +38,7 @@ jobs:
         username: ${{ vars.REGISTRY_USER }}
         password: ${{ secrets.REGISTRY_TOKEN }}
     - name: Create release
-      run: docker buildx build --load --platform linux/${{ matrix.arch }} --build-arg VERSION=${{ inputs.version }} --build-arg ARCH=${{ matrix.arch }} -t ${{ vars.REGISTRY }}/${{ vars.REPOSITORY }}/vcluster-pro:${{ inputs.version }}-${{ matrix.arch }} .
+      run: docker buildx build --load --platform linux/${{ matrix.arch }} --build-arg VERSION=${{ inputs.version }} -t ${{ vars.REGISTRY }}/${{ vars.REPOSITORY }}/vcluster-pro:${{ inputs.version }}-${{ matrix.arch }} .
       env:
         DOCKER_CLI_EXPERIMENTAL: enabled
     - name: Push release
